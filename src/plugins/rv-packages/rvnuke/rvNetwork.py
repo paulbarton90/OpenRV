@@ -316,7 +316,7 @@ class RvCommunicator:
             else:
                 print("ERROR: unknown message type: %s\n" % messType, file=sys.stderr)
 
-        for (event, contents) in self.eventQueue:
+        for event, contents in self.eventQueue:
             if event in self.handlers:
                 self.handlers[event](contents)
 

@@ -880,7 +880,7 @@ class Session:
 
         containers = {}
 
-        for (path, info) in sorted(properties.items()):
+        for path, info in sorted(properties.items()):
 
             (subObjType, subObject, container, prop) = path
             (typeName, value) = info

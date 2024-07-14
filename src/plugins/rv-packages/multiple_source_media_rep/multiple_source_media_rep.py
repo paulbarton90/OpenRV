@@ -349,7 +349,7 @@ class MultipleSourceMediaRepMode(rvtypes.MinorMode):
         reps_and_source_nodes = {}
         for switch_node in switch_nodes:
             reps_and_nodes = rvc.sourceMediaRepsAndNodes(switch_node)
-            for (rep, source_node) in reps_and_nodes:
+            for rep, source_node in reps_and_nodes:
                 if rep in reps_and_source_nodes.keys():
                     reps_and_source_nodes[rep].append(source_node)
                 else:

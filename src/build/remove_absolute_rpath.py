@@ -21,7 +21,7 @@ from typing import Iterable
 future_lock = threading.Lock()
 
 # Configure logging.
-logging.basicConfig(format='-- %(message)s')
+logging.basicConfig(format="-- %(message)s")
 logger = logging.getLogger().setLevel(logging.INFO)
 
 
@@ -138,9 +138,9 @@ def fix_rpath(target, root):
 
 def read_paths_from_file(file_path):
     paths = []
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         for line in file:
-            paths.append(line.strip()) # strip() removes newline characters
+            paths.append(line.strip())  # strip() removes newline characters
     return paths
 
 

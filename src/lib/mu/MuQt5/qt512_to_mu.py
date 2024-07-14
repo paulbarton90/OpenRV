@@ -593,7 +593,7 @@ repMap = [
 
 
 def repMapFind(x):
-    for (rexp, val) in repMap:
+    for rexp, val in repMap:
         if rexp.match(x):
             return val
     return None
@@ -1971,7 +1971,7 @@ class MuFunction:
             else:
                 self.args.append(("this", muclass.name, None))
 
-        for (aname, atype, aval) in args:
+        for aname, atype, aval in args:
             mutype = api.translate(atype, c)
             if mutype == None:
                 self.failed = True
@@ -2073,7 +2073,7 @@ class MuFunction:
         )
         if self.args:
             out += "Parameters, "
-            for (aname, atype, aval) in self.args:
+            for aname, atype, aval in self.args:
                 atype = conditionType(atype)
                 if self.muclass.muapi.classes.has_key(atype):
                     atype = "qt." + atype
@@ -2110,7 +2110,7 @@ class MuFunction:
         out += "%s(NODE_THREAD" % self.compiled
         if self.args:
             count = 0
-            for (aname, atype, aval) in self.args:
+            for aname, atype, aval in self.args:
                 rep = repMapFind(atype)
                 (repType, instType) = rep
                 if count == 0 and self.ismember:
@@ -2197,7 +2197,7 @@ class MuFunction:
             return "// NO FUNC: CONSTRUCTOR IS PROTECTED: %s" % self.muDeclaration()
         rep = repMapFind(self.rtype)
         out = "%s %s(Mu::Thread& NODE_THREAD" % (rep[0], self.compiled)
-        for (aname, atype, aval) in self.args:
+        for aname, atype, aval in self.args:
             rep = repMapFind(atype)
             out += ", %s param_%s" % (rep[0], aname)
         out += ")\n{\n"
@@ -2443,7 +2443,7 @@ class MuFunction:
     def muDeclaration(self):
         out = "%s (%s; " % (self.name, self.rtype)
         comma = False
-        for (aname, mutype, aval) in self.args:
+        for aname, mutype, aval in self.args:
             if comma:
                 out += ", "
             out += "%s %s" % (mutype, aname)
@@ -3428,7 +3428,7 @@ class QtDocParser(SGMLParser):
         self.qtnamespace.isclass = isclass
 
     def start_span(self, attrs):
-        for (attr, value) in attrs:
+        for attr, value in attrs:
             if value == "small-subtitle":
                 self.modulespan = True
 
@@ -3455,11 +3455,11 @@ class QtDocParser(SGMLParser):
 
     def start_a(self, attrs):
         if self.ininheritedby:
-            for (attr, value) in attrs:
+            for attr, value in attrs:
                 if attr == "href":
                     self.addChildURL(value)
         elif self.infunc:
-            for (attr, value) in attrs:
+            for attr, value in attrs:
                 if attr == "href":
                     self.funcIsProp = value.rfind("-prop") != -1
         self.acount += 1
@@ -3747,7 +3747,7 @@ def recursiveParse(url):
         for u in parser.childurls:
             # if "qwidget.html" in u:
             recursiveParse(u)
-    except (IOError):
+    except IOError:
         print("FAILED: (IOError)", url)
     except:
         print("FAILED:", url)

@@ -304,7 +304,7 @@ all_mu_commands = [
     "sourceMediaReps",
     "sourceMediaRepSwitchNode",
     "sourceMediaRepSourceNode",
-    "sourceMediaRepsAndNodes"
+    "sourceMediaRepsAndNodes",
 ]
 
 
