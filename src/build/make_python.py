@@ -441,7 +441,6 @@ def configure() -> None:
         if OPENSSL_OUTPUT_DIR:
             configure_args.append(f"--with-openssl={OPENSSL_OUTPUT_DIR}")
 
-
         if VARIANT == "Release":
             configure_args.append("--enable-optimizations")
 
@@ -564,7 +563,6 @@ def build() -> None:
         subprocess_env = {**os.environ, "PYTHON": python_env, "PATH": path_env}
         if OPENSSL_OUTPUT_DIR:
             subprocess_env["LC_RPATH"] = os.path.join(OPENSSL_OUTPUT_DIR, "lib")
-
 
         subprocess.run(
             build_args,

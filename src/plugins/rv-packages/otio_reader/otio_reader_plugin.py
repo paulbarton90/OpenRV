@@ -1,6 +1,7 @@
 """
 Example plugin showing how otio files can be loaded into an RV context
 """
+
 #
 # Copyright Contributors to the OpenTimelineIO project
 #

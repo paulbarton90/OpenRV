@@ -24,6 +24,7 @@ future_lock = threading.Lock()
 logging.basicConfig(format='-- %(message)s')
 logger = logging.getLogger().setLevel(logging.INFO)
 
+
 def get_object_files(target):
     target = Path(target)
 
@@ -60,6 +61,7 @@ def get_rpaths(object_file_path):
                     yield rpath_line[1]
                     break
 
+
 def get_shared_library_paths(object_file_path):
     otool_output = subprocess.check_output(
         ["otool", "-L", object_file_path]
@@ -73,6 +75,7 @@ def get_shared_library_paths(object_file_path):
         if "(compatibility version" in otool_line:
             yield otool_line.split("(compatibility")[0].strip()
 
+
 def delete_rpath(object_file_path, rpath):
     delete_rpath_command = [
         "install_name_tool",
@@ -81,6 +84,7 @@ def delete_rpath(object_file_path, rpath):
         object_file_path,
     ]
     subprocess.run(delete_rpath_command).check_returncode()
+
 
 def change_shared_library_path(object_file_path, old_library_path):
     new_library_path = f"@rpath/{os.path.basename(old_library_path)}"
@@ -95,6 +99,7 @@ def change_shared_library_path(object_file_path, old_library_path):
     subprocess.run(change_shared_library_path_command).check_returncode()
 
     return new_library_path
+
 
 def fix_rpath(target, root):
     for file in get_object_files(target):
@@ -130,6 +135,7 @@ def fix_rpath(target, root):
 
             logging.info(output)
 
+
 def read_paths_from_file(file_path):
     paths = []
     with open(file_path, 'r') as file:
@@ -137,10 +143,12 @@ def read_paths_from_file(file_path):
             paths.append(line.strip()) # strip() removes newline characters
     return paths
 
+
 def fix_rpath_with_lock(path, root_dir):
     with future_lock:
         return fix_rpath(str(path), str(root_dir))
-    
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
@@ -159,7 +167,7 @@ if __name__ == "__main__":
         raise FileNotFoundError(f"Unable to locate {args.files_list.absolute()}")
     if args.root_dir.exists() is False:
         raise FileNotFoundError(f"Unable to locate {args.root_dir.absolute()}")
-    
+
     # file option has priority over files-list.
     if args.file:
         # Fail if file is not in root

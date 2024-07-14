@@ -112,6 +112,7 @@ import operator
 from functools import reduce
 import six
 
+
 #############################################
 class Property:
     """

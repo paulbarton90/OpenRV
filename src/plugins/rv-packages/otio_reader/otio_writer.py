@@ -200,7 +200,7 @@ def _create_track(node_name, *args, **kwargs):
         kwargs["in_frame"] = edl_in
         kwargs["out_frame"] = edl_out
         kwargs["cut_in_frame"] = cut_in_frame
-         
+
         item = create_otio_from_rv_node(rv_node, *args, **kwargs)
 
         if has_edl:
