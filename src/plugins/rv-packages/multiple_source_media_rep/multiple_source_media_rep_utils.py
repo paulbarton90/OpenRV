@@ -123,9 +123,7 @@ def get_extension_from_info_file(info_file):
     return (
         ""
         if not info_file
-        else "URL"
-        if is_url(info_file)
-        else info_file.split(".")[-1].upper()
+        else "URL" if is_url(info_file) else info_file.split(".")[-1].upper()
     )
 
 

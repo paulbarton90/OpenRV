@@ -538,9 +538,11 @@ def _create_item(it, context=None):
         context,
         src=active_src,
         source_group=commands.nodeGroup(active_src),
-        switch_group=src_or_switch_group
-        if commands.nodeType(src_or_switch_group) == "RVSwitchGroup"
-        else None,
+        switch_group=(
+            src_or_switch_group
+            if commands.nodeType(src_or_switch_group) == "RVSwitchGroup"
+            else None
+        ),
     ):
         if context.get("transition"):
             _add_transition_timings(it, range_to_read, src_or_switch_group)

@@ -41,9 +41,9 @@ def get_object_files(target):
 
 
 def get_rpaths(object_file_path):
-    otool_output = subprocess.check_output(
-        ["otool", "-l", object_file_path]
-    ).decode().splitlines()
+    otool_output = (
+        subprocess.check_output(["otool", "-l", object_file_path]).decode().splitlines()
+    )
 
     i = 0
     while i < len(otool_output):
@@ -63,9 +63,9 @@ def get_rpaths(object_file_path):
 
 
 def get_shared_library_paths(object_file_path):
-    otool_output = subprocess.check_output(
-        ["otool", "-L", object_file_path]
-    ).decode().splitlines()
+    otool_output = (
+        subprocess.check_output(["otool", "-L", object_file_path]).decode().splitlines()
+    )
 
     i = 0
 
@@ -130,8 +130,8 @@ def fix_rpath(target, root):
 
             shared_library_name = os.path.basename(library_path)
             if library_path.startswith(root) or library_path == shared_library_name:
-                 new_library_path = change_shared_library_path(file, library_path)
-                 output += f" (Changed to {new_library_path})"
+                new_library_path = change_shared_library_path(file, library_path)
+                output += f" (Changed to {new_library_path})"
 
             logging.info(output)
 
@@ -152,9 +152,19 @@ def fix_rpath_with_lock(path, root_dir):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--file", type=pathlib.Path, dest="file", help="Target to sanitize")
-    parser.add_argument("--files-list", type=pathlib.Path, dest="files_list", help="Files to sanitize")
-    parser.add_argument("--root", type=pathlib.Path, dest="root_dir", help="Root directory", required=True)
+    parser.add_argument(
+        "--file", type=pathlib.Path, dest="file", help="Target to sanitize"
+    )
+    parser.add_argument(
+        "--files-list", type=pathlib.Path, dest="files_list", help="Files to sanitize"
+    )
+    parser.add_argument(
+        "--root",
+        type=pathlib.Path,
+        dest="root_dir",
+        help="Root directory",
+        required=True,
+    )
 
     args = parser.parse_args()
 
@@ -172,12 +182,21 @@ if __name__ == "__main__":
     if args.file:
         # Fail if file is not in root
         if args.file.resolve().relative_to(args.root_dir.resolve()) is False:
-            raise ValueError(f"File {args.file.absolute()} is not in root {args.root_dir.absolute()}")
+            raise ValueError(
+                f"File {args.file.absolute()} is not in root {args.root_dir.absolute()}"
+            )
     elif args.files_list:
         paths = read_paths_from_file(str(args.files_list.resolve().absolute()))
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # Create a list of futures for each path to be processed.
-            futures = [executor.submit(fix_rpath_with_lock, pathlib.Path(path), args.root_dir.resolve().absolute()) for path in paths]
+            futures = [
+                executor.submit(
+                    fix_rpath_with_lock,
+                    pathlib.Path(path),
+                    args.root_dir.resolve().absolute(),
+                )
+                for path in paths
+            ]
             for future in concurrent.futures.as_completed(futures):
                 try:
                     result = future.result()

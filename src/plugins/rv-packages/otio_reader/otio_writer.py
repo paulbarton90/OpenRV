@@ -218,7 +218,7 @@ def _create_track(node_name, *args, **kwargs):
 
         # Now that we have the items surrounding the transition, create it
         if transition:
-            kwargs["pre_item"] = track[-1] if len(track) > 0 else None,
+            kwargs["pre_item"] = (track[-1] if len(track) > 0 else None,)
             kwargs["post_item"] = item
 
             transition_node = create_otio_from_rv_node(transition, *args, **kwargs)
@@ -291,12 +291,16 @@ def _create_item(node_name, *args, **kwargs):
 
     # Create TimeRange
     start_time, duration = frames_to_rational_times(
-        start_frame=in_frame
-        if in_frame is not None
-        else get_source_start_frame(active_source_group),
-        end_frame=out_frame
-        if out_frame is not None
-        else get_source_end_frame(active_source_group),
+        start_frame=(
+            in_frame
+            if in_frame is not None
+            else get_source_start_frame(active_source_group)
+        ),
+        end_frame=(
+            out_frame
+            if out_frame is not None
+            else get_source_end_frame(active_source_group)
+        ),
         fps=fps,
     )
     if start_time or duration:

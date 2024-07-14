@@ -62,7 +62,11 @@ def is_library_media_url(url: str) -> bool:
     In this demonstration function, all urls are handled by the media library if any of the
     environment variables are set.
     """
-    return COOKIES_ENV in os.environ or HEADERS_ENV in os.environ or DOWNLOAD_ENV in os.environ
+    return (
+        COOKIES_ENV in os.environ
+        or HEADERS_ENV in os.environ
+        or DOWNLOAD_ENV in os.environ
+    )
 
 
 def is_streaming(url: str) -> bool:
@@ -115,7 +119,7 @@ def get_http_cookies(url: str) -> Iterable[Dict]:
             "name": cookie.key,
             "value": cookie.value,
             "domain": cookie["domain"],
-            "path": cookie["path"]
+            "path": cookie["path"],
         }
 
     yield from ()
@@ -145,10 +149,11 @@ def get_http_headers(url: str) -> Iterable[Dict]:
         name, value = header.split(":", 1)
         yield {
             "name": name.strip(),
-            "value": value.strip()
+            "value": value.strip(),
         }
 
     yield from ()
+
 
 redirection_cache = {}
 
@@ -172,7 +177,12 @@ def get_http_redirection(url: str) -> str:
     session = requests.Session()
 
     for cookie in get_http_cookies(url):
-        session.cookies.set(cookie["name"], cookie["value"], domain=cookie["domain"], path=cookie["path"])
+        session.cookies.set(
+            cookie["name"],
+            cookie["value"],
+            domain=cookie["domain"],
+            path=cookie["path"],
+        )
 
     for header in get_http_headers(url):
         session.headers[header["name"]] = header["value"]
