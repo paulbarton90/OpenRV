@@ -138,6 +138,23 @@ ELSEIF(UNIX)
         BOOL TRUE "Detected a Redhat Entreprise Linux OS"
     )
   ENDIF()
+
+  EXECUTE_PROCESS(
+    COMMAND cat /etc/debian_version
+    OUTPUT_VARIABLE IS_DEBIAN
+    ERROR_QUIET
+  )
+
+  IF(IS_DEBIAN)
+    EXECUTE_PROCESS(
+      COMMAND lsb_release -d -s
+      OUTPUT_VARIABLE DEB_DISTRO_DESC
+      ERROR_QUIET
+    )
+    STRING(STRIP ${DEB_DISTRO_DESC} DEB_DISTRO_DESC)
+    STRING(STRIP ${IS_DEBIAN} IS_DEBIAN)
+    MESSAGE(STATUS "Debian based system: ${DEB_DISTRO_DESC}")
+  ENDIF()
 ELSEIF(WIN32)
   MESSAGE(STATUS "Building RV for Microsoft Windows")
   SET(RV_TARGET_WINDOWS

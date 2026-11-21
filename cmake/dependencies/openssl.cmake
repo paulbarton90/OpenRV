@@ -6,6 +6,13 @@
 
 RV_CREATE_STANDARD_DEPS_VARIABLES("RV_DEPS_OPENSSL" "${RV_DEPS_OPENSSL_VERSION}" "" "")
 
+# If we are on debian/ubuntu force the lib_dir to be lib64
+IF(IS_DEBIAN)
+  SET(_lib_dir
+      ${_install_dir}/lib64
+  )
+ENDIF()
+
 IF(RV_TARGET_IS_RHEL8
    AND RV_VFX_PLATFORM STREQUAL CY2023
 )
